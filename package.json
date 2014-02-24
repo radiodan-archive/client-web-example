@@ -18,5 +18,8 @@
   "bugs": {
     "url": "https://github.com/radiodan/client_web_example/issues"
   },
-  "homepage": "https://github.com/radiodan/client_web_example"
+  "homepage": "https://github.com/radiodan/client_web_example",
+  "dependencies": {
+    "express": "^3.4.8"
+  }
 }
