@@ -8,17 +8,20 @@ vol.addEventListener('change', function (evt) {
   player.volume({ value: vol.value });
 });
 
-player.on('message', function (content) {
-  if (content.volume) {
-    console.log('changing volume to ', content.volume);
-    vol.value = content.volume;
-  }
-  console.log(content);
-  if (content.forEach) {
-    playlists.innerHTML = content.map(function (item) {
-      return '<li>' + (item.file || '') + '</li>';
-    });
-  }
+player.on('volume', function(content) {
+  console.log('changing volume to ', content.volume);
+  vol.value = content.volume;
+});
+
+player.on('playlist', function (content) {
+  console.log('changing playlist');
+  playlists.innerHTML = content.map(function (item) {
+    return '<li>' + (item.file || '') + '</li>';
+  });
+});
+
+player.on('player', function (content) {
+  console.log('player changed', content);
 });
 
 var playButton = document.querySelector('.play');
