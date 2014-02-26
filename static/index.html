@@ -7,7 +7,21 @@
 </head>
 <body>
   <h1>Radiodan Client</h1>
+  <h2>Player control</h2>
+  <button class="play">PLAY</button>
+  <button class="pause">PAUSE</button>
   <label>Volume: <input class="volume" type="range" value="0" min="0" max="100" />
+
+  <h2>Playlists</h2>
+  <button class="playlist-clear">Clear playlist</button>
+  <label class="playlist">Item to add to playlist:
+    <input type="text" placeholder="Stream, music file" />
+    <button>Add</button>
+  </label>
+
+  <ul class="playlists">
+  </ul>
+
   <script src="/js/app.js"></script>
 </body>
 </html>
