@@ -15,6 +15,10 @@
       console.log('Volume', vol.value);
       player.volume({ value: vol.value });
     });
+
+    player.on('message', function (content) {
+      console.log('Received message', content);
+    });
   </script>
 </body>
 </html>
