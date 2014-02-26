@@ -8,20 +8,6 @@
 <body>
   <h1>Radiodan Client</h1>
   <label>Volume: <input class="volume" type="range" value="0" min="0" max="100" />
-  <script>
-    var player = radiodan.player.create(1);
-    var vol = document.querySelector('.volume');
-    vol.addEventListener('change', function (evt) {
-      console.log('Volume', vol.value);
-      player.volume({ value: vol.value });
-    });
-
-    player.on('message', function (content) {
-      if (content.volume) {
-        console.log('changing volume to ', content.volume);
-        vol.value = content.volume;
-      }
-    });
-  </script>
+  <script src="/js/app.js"></script>
 </body>
 </html>
