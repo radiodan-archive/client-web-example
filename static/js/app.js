@@ -8,6 +8,10 @@ vol.addEventListener('change', function (evt) {
   player.volume({ value: vol.value });
 });
 
+setTimeout(function () {
+  player.volume({ diff: -1 });
+}, 1000);
+
 player.on('volume', function(content) {
   console.log('changing volume to ', content.volume);
   vol.value = content.volume;
