@@ -83,7 +83,8 @@ xhr.onload = function() {
  var json = JSON.parse(xhr.responseText);
  streams.innerHTML = json.services.map(function (service) {
   if (service.streams.length > 0) {
-    return '<li><a href="' + service.streams[0].url + '">' + service.title + '</a></li>';
+    return '<li><a href="' + service.streams[0].url + '">'
+          + '<img title="' + service.title + '" alt="' + service.title + '" src="' + service.logos.svg + '" /></a></li>';
   } else {
     return '';
   }
