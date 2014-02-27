@@ -3,8 +3,28 @@
 <head>
   <link rel="stylesheet" href="/css/lib/pure.css">
   <style type="text/css">
+    body {
+      margin: 2em;
+    }
+    .streams li {
+      list-style: none;
+      display: inline-block;
+      vertical-align: top;
+      margin: 1em;
+      width: 100px;
+    }
+
+    .streams a {
+      text-decoration: none;
+      color: #000;
+    }
+
+    .streams span {
+      display: block;
+    }
+
     .streams img {
-      width: 50px;
+      height: 50px;
     }
   </style>
 
@@ -13,27 +33,36 @@
 </head>
 <body>
   <h1>Radiodan Client</h1>
-  <h2>Player control</h2>
-  <button class="play">PLAY</button>
-  <button class="pause">PAUSE</button>
-  <label>Volume: <input class="volume" type="range" value="0" min="0" max="100" />
+  <div class="pure-g">
+    <div class="pure-u-1-2">
+    <h2>Player control</h2>
+    <button class="play pure-button">PLAY</button>
+    <button class="pause pure-button">PAUSE</button>
+    <label>Volume: <input class="volume" type="range" value="0" min="0" max="100" />
 
-  <h2>Playlists</h2>
-  <button class="playlist-clear">Clear playlist</button>
-  <label class="playlist">Item to add to playlist:
-    <input type="text" placeholder="Stream, music file" />
-    <button>Add</button>
-  </label>
+    <h2>Playlists</h2>
+    <div>
+      <button class="playlist-clear pure-button">Clear playlist</button>
+    </div>
+    <div>
+      <label class="playlist">Item to add to playlist:
+        <input type="text" placeholder="Stream, music file" />
+        <button class="pure-button">Add</button>
+      </label>
+    </div>
 
-  <div>
-    <h3>Current playlist</h3>
-    <ul class="playlists">
-      <li>Playlist is empty</li>
-    </ul>
+    <div>
+      <h3>Current playlist</h3>
+      <ul class="playlists">
+        <li>Playlist is empty</li>
+      </ul>
+    </div>
   </div>
 
-  <ul class="streams">
-  </ul>
+  <div class="pure-u-1-2">
+    <ul class="streams">
+    </ul>
+  </div>
 
   <script src="/js/app.js"></script>
 </body>

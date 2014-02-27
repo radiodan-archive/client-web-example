@@ -17,11 +17,13 @@ player.on('playlist', function (content) {
   console.log('changing playlist');
   var html = '';
 
+  console.log('playlist: ', content);
+
   if (content.length == 0) {
     html = '<li>Playlist is empty</li>';
   } else {
     html = content.map(function (item) {
-      return '<li>' + (item.file || '') + '</li>';
+      return '<li>' + (item.Name || '') + '</li>';
     }).join('\n');
   }
 
@@ -70,12 +72,24 @@ playlistButton.addEventListener('click', function () {
 
 var streams = document.querySelector('.streams');
 streams.addEventListener('click', function (evt) {
-  var url = evt.target.getAttribute('href');
-  player.clear();
-  player.add({ playlist: [url] });
-  player.play();
+  var target = evt.target.parentNode;
+
+  console.log('click', evt);
+
   evt.preventDefault();
-});
+
+  if (target.nodeName !== 'A') { return; }
+
+  var url = target.getAttribute('href');
+
+  if (url) {
+    player.clear();
+    player.add({ playlist: [url] });
+    player.play();
+  } else {
+    console.log('No url for stream');
+  }
+}, false);
 
 xhr = createCORSRequest('GET', 'http://bbcservices.herokuapp.com/services.json');
 xhr.withCredentials = true;
@@ -83,8 +97,12 @@ xhr.onload = function() {
  var json = JSON.parse(xhr.responseText);
  streams.innerHTML = json.services.map(function (service) {
   if (service.streams.length > 0) {
-    return '<li><a href="' + service.streams[0].url + '">'
-          + '<img title="' + service.title + '" alt="' + service.title + '" src="' + service.logos.svg + '" /></a></li>';
+    return '<li>'
+          +   '<a href="' + service.streams[0].url + '">'
+          +     '<img src="' + service.logos.svg + '" />'
+          +     '<span>' + (service.now_and_next[0].brand || '') + '</span>'
+          +   '</a>'
+          + '</li>';
   } else {
     return '';
   }
