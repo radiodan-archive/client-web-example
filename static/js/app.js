@@ -15,9 +15,17 @@ player.on('volume', function(content) {
 
 player.on('playlist', function (content) {
   console.log('changing playlist');
-  playlists.innerHTML = content.map(function (item) {
-    return '<li>' + (item.file || '') + '</li>';
-  });
+  var html = '';
+
+  if (content.length == 0) {
+    html = '<li>Playlist is empty</li>';
+  } else {
+    html = content.map(function (item) {
+      return '<li>' + (item.file || '') + '</li>';
+    }).join('\n');
+  }
+
+  playlists.innerHTML = html;
 });
 
 player.on('player', function (content) {
@@ -61,6 +69,13 @@ playlistButton.addEventListener('click', function () {
 });
 
 var streams = document.querySelector('.streams');
+streams.addEventListener('click', function (evt) {
+  var url = evt.target.getAttribute('href');
+  player.clear();
+  player.add({ playlist: [url] });
+  player.play();
+  evt.preventDefault();
+});
 
 xhr = createCORSRequest('GET', 'http://bbcservices.herokuapp.com/services.json');
 xhr.withCredentials = true;
