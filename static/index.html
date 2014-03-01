@@ -2,9 +2,16 @@
 <html>
 <head>
   <link rel="stylesheet" href="/css/lib/pure.css">
+  <link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.css">
   <style type="text/css">
     body {
       margin: 2em;
+    }
+
+    .msg {
+      display: inline-block;
+      min-width: 50px;
+      min-height: 50px;
     }
     .streams li {
       list-style: none;
@@ -30,6 +37,25 @@
     .streams img {
       height: 50px;
     }
+
+    .search .spinner {
+      opacity: 0;
+      -webkit-transition: opacity 0.3s ease-out;
+         -moz-transition: opacity 0.3s ease-out;
+           -o-transition: opacity 0.3s ease-out;
+              transition: opacity 0.3s ease-out;
+
+    }
+
+    .search .spinner.is-active {
+      opacity: 1;
+    }
+
+    .remove {
+      border: none;
+      background: none;
+      color: red;
+    }
   </style>
 
   <script src="/radiodan/client.js"></script>
@@ -42,7 +68,10 @@
     <h2>Player control</h2>
     <button class="play pure-button">PLAY</button>
     <button class="pause pure-button">PAUSE</button>
-    <label>Volume: <input class="volume" type="range" value="0" min="0" max="100" />
+    <label>
+      <i class="fa fa-volume-up"></i>
+      <input class="volume" type="range" value="0" min="0" max="100" />
+    </label>
 
     <h2>Playlists</h2>
     <div>
@@ -68,6 +97,9 @@
         <input type="search" placeholder="file name, track, artists" />
         <button class="pure-button">Search</button>
       </label>
+      <span class="spinner">
+        <i class="fa fa-spinner fa-spin"></i>
+      </span>
       <span class="msg"></span>
       <ul class="results"></ul>
     </div>

@@ -34,7 +34,7 @@ player.on('playlist', function (content) {
 
 function playlistItem(item) {
   return    '<li data-pos="' + item.Pos + '">'
-          +   '<button>Remove</button>'
+          +   '<button class="remove"><i class="fa fa-times-circle-o"></i></button>'
           +   (item.Name || item.Title || '')
           + '</li>';
 }
@@ -65,6 +65,11 @@ var playlist = document.querySelector('.playlists');
 playlist.addEventListener('click', function (evt) {
       var target = evt.target,
           pos;
+
+      if (target.nodeName === 'I') {
+        target = target.parentNode;
+      }
+
       if (target.nodeName === 'BUTTON') {
         evt.preventDefault();
         pos = target.parentNode
@@ -118,6 +123,7 @@ var $searchInput   = $search.querySelector('input');
 var $searchButton  = $search.querySelector('button');
 var $searchResults = $search.querySelector('ul');
 var $searchStatus  = $search.querySelector('.msg');
+var $searchSpinner = $search.querySelector('.spinner');
 $searchInput.addEventListener('input', performSearch);
 $searchButton.addEventListener('click', performSearch);
 $searchResults.addEventListener('click', function (evt) {
@@ -183,11 +189,13 @@ function clearSearchResults() {
 }
 
 function showLoadingIndicator() {
-  $searchStatus.innerHTML = 'Loading';
+  $searchSpinner.classList
+                .add('is-active');
 }
 
 function hideLoadingIndicator() {
-  $searchStatus.innerHTML = '';
+  $searchSpinner.classList
+                .remove('is-active');
 }
 
 
