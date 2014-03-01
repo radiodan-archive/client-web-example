@@ -26,13 +26,18 @@ player.on('playlist', function (content) {
   if (content.length == 0) {
     html = '<li>Playlist is empty</li>';
   } else {
-    html = content.map(function (item) {
-      return '<li>' + (item.Name || '') + '</li>';
-    }).join('\n');
+    html = content.map(playlistItem).join('\n');
   }
 
   playlists.innerHTML = html;
 });
+
+function playlistItem(item) {
+  return    '<li data-pos="' + item.Pos + '">'
+          +   '<button>Remove</button>'
+          +   (item.Name || item.Title || '')
+          + '</li>';
+}
 
 player.on('player', function (content) {
   console.log('player changed', content);
@@ -55,6 +60,19 @@ playlistClearButton.addEventListener('click', function () {
 
 var playlistInput = document.querySelector('.playlist input');
 var playlistButton = document.querySelector('.playlist button');
+var playlist = document.querySelector('.playlists');
+
+playlist.addEventListener('click', function (evt) {
+      var target = evt.target,
+          pos;
+      if (target.nodeName === 'BUTTON') {
+        evt.preventDefault();
+        pos = target.parentNode
+                    .dataset
+                    .pos;
+        removeFromPlaylist(pos);
+      }
+});
 
 playlistButton.addEventListener('click', function () {
   if (playlistInput.value == '') { return; }
@@ -102,6 +120,27 @@ var $searchResults = $search.querySelector('ul');
 var $searchStatus  = $search.querySelector('.msg');
 $searchInput.addEventListener('input', performSearch);
 $searchButton.addEventListener('click', performSearch);
+$searchResults.addEventListener('click', function (evt) {
+  var target = evt.target,
+      file;
+  if (target.nodeName === 'A') {
+    file = target.getAttribute('href');
+    addToPlaylist(file);
+  }
+  evt.preventDefault();
+});
+
+function addToPlaylist(file) {
+  if (file) {
+    player.add({ playlist: file });
+  }
+}
+
+function removeFromPlaylist(pos) {
+  if (pos) {
+    player.remove({ position: pos });
+  }
+}
 
 function performSearch() {
   var term = $searchInput.value;
@@ -122,8 +161,6 @@ function search(term) {
 function showResults(results) {
   var html = '';
 
-  console.log(results);
-
   if (results && results[0]) {
     html = results.map(htmlForResult).join('');
   }
@@ -134,14 +171,11 @@ function showResults(results) {
 }
 
 function htmlForResult(result) {
-  console.log('result', result);
-  var html ='<li>'
-          +   '<a>'
+  return '<li>'
+          +   '<a href="' + result.file + '">'
           +     result.Title + ', ' + result.Artist
           +   '</a>'
           + '</li>';
-  console.log(html);
-  return html;
 }
 
 function clearSearchResults() {
