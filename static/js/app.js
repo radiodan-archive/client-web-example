@@ -95,6 +95,69 @@ streams.addEventListener('click', function (evt) {
   }
 }, false);
 
+var $search = document.querySelector('.search');
+var $searchInput   = $search.querySelector('input');
+var $searchButton  = $search.querySelector('button');
+var $searchResults = $search.querySelector('ul');
+var $searchStatus  = $search.querySelector('.msg');
+$searchInput.addEventListener('input', performSearch);
+$searchButton.addEventListener('click', performSearch);
+
+function performSearch() {
+  var term = $searchInput.value;
+  if (term.length > 0) {
+    search(term);
+  } else {
+    clearSearchResults();
+  }
+}
+
+function search(term) {
+  player.search({ any: term })
+        .then(showResults)
+        .then(hideLoadingIndicator, hideLoadingIndicator);
+  showLoadingIndicator();
+}
+
+function showResults(results) {
+  var html = '';
+
+  console.log(results);
+
+  if (results && results[0]) {
+    html = results.map(htmlForResult).join('');
+  }
+
+  $searchResults.innerHTML = html;
+
+  return;
+}
+
+function htmlForResult(result) {
+  console.log('result', result);
+  var html ='<li>'
+          +   '<a>'
+          +     result.Title + ', ' + result.Artist
+          +   '</a>'
+          + '</li>';
+  console.log(html);
+  return html;
+}
+
+function clearSearchResults() {
+  $searchResults.innerHTML = '';
+}
+
+function showLoadingIndicator() {
+  $searchStatus.innerHTML = 'Loading';
+}
+
+function hideLoadingIndicator() {
+  $searchStatus.innerHTML = '';
+}
+
+
+
 getJSON('http://bbcservices.herokuapp.com/services.json', buildServicesList);
 
 function buildServicesList(json) {
