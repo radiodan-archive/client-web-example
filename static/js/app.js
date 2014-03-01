@@ -95,46 +95,19 @@ streams.addEventListener('click', function (evt) {
   }
 }, false);
 
-xhr = createCORSRequest('GET', 'http://bbcservices.herokuapp.com/services.json');
-xhr.withCredentials = true;
-xhr.onload = function() {
- var json = JSON.parse(xhr.responseText);
- streams.innerHTML = json.services.map(function (service) {
-  if (service.streams.length > 0) {
-    return '<li>'
-          +   '<a href="' + service.streams[0].url + '">'
-          +     '<img src="' + service.logos.svg + '" />'
-          +     '<span>' + (service.now_and_next[0].brand || '') + '</span>'
-          +   '</a>'
-          + '</li>';
-  } else {
-    return '';
-  }
- }).join('');
-};
-xhr.send();
+getJSON('http://bbcservices.herokuapp.com/services.json', buildServicesList);
 
-
-function createCORSRequest(method, url) {
-  var xhr = new XMLHttpRequest();
-  if ("withCredentials" in xhr) {
-
-    // Check if the XMLHttpRequest object has a "withCredentials" property.
-    // "withCredentials" only exists on XMLHTTPRequest2 objects.
-    xhr.open(method, url, true);
-
-  } else if (typeof XDomainRequest != "undefined") {
-
-    // Otherwise, check if XDomainRequest.
-    // XDomainRequest only exists in IE, and is IE's way of making CORS requests.
-    xhr = new XDomainRequest();
-    xhr.open(method, url);
-
-  } else {
-
-    // Otherwise, CORS is not supported by the browser.
-    xhr = null;
-
-  }
-  return xhr;
+function buildServicesList(json) {
+  streams.innerHTML = json.services.map(function (service) {
+   if (service.streams.length > 0) {
+     return '<li>'
+           +   '<a href="' + service.streams[0].url + '">'
+           +     '<img src="' + service.logos.svg + '" />'
+           +     '<span>' + (service.now_and_next[0].brand || '') + '</span>'
+           +   '</a>'
+           + '</li>';
+   } else {
+     return '';
+   }
+  }).join('');
 }
