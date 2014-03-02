@@ -30,6 +30,14 @@ body {
   width: 49%;
 }
 
+.button-xsmall {
+  font-size: 70%;
+}
+
+
+/*
+  Play-pause button
+*/
 .play-pause {
   position: relative;
 }
@@ -44,6 +52,25 @@ body {
 
 .play-pause[data-state='playing'] .fa-play {
   opacity: 0;
+}
+
+/*
+  Current playlist panel
+*/
+.current-playlist {
+  position: relative;
+}
+
+.current-playlist table {
+  width: 100%;
+  border: none;
+}
+
+.clear-playlist {
+  position: absolute;
+  right: 0;
+  top: 0;
+  font-weight: bold;
 }
 
 .transition-opacity {

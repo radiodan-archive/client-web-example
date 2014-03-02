@@ -17,3 +17,7 @@ function previousTrack() {
 function setVolume(vol) {
   player.volume({ value: vol });
 }
+
+function clearPlaylist() {
+  player.clear();
+}

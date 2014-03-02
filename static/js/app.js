@@ -78,58 +78,50 @@ player.on('volume', function(content) {
 });
 
 /*
-var playlists = document.querySelector('.playlists');
+  When the playlist has changed, rebuild the
+  playlist table
+*/
+var currentPlaylistEl = document.querySelector('#current-playlist table tbody');
+player.on('playlist', rebuildPlaylistTable);
 
-var vol = document.querySelector('.volume');
-vol.addEventListener('change', function (evt) {
-  console.log('Volume', vol.value);
-  setVolume(vol.value)
-});
-
-player.on('volume', function(content) {
-  console.log('changing volume to ', content.volume);
-  vol.value = content.volume;
-});
-
-player.on('playlist', function (content) {
-  console.log('changing playlist');
+function rebuildPlaylistTable(content) {
   var html = '';
-
-  console.log('playlist: ', content);
-
-  if (content.length == 0) {
-    html = '<li>Playlist is empty</li>';
+  if (content.length === 0) {
+    html = 'Playlist is empty';
   } else {
-    html = content.map(playlistItem).join('\n');
+    content.map(createPlaylistRowForItem);
   }
 
-  playlists.innerHTML = html;
+  currentPlaylistEl.innerHTML = html;
+}
+
+/*
+  For a playlist item, returns a single
+  table row of HTML markup
+*/
+function createPlaylistRowForItem(item) {
+  return    '<tr>'
+          +   '<td>' + item.Pos + '</td>'
+          +   '<td>' + (item.Name || item.Title || '') + '</td>'
+          +   '<td>' + (item.Artist || '') + '</td>'
+          +   '<td>' + '00:00' + '</td>'
+          +   '<td><button class="remove" data-pos="' + item.Pos + '"><i class="fa fa-times-circle-o"></i></button></td>'
+          + '</tr>';
+}
+
+/*
+  Clear the entire playlist when the button is pressed
+*/
+var playlistClearButtonEl = document.querySelector('.clear-playlist');
+playlistClearButtonEl.addEventListener('click', function () {
+  clearPlaylist();
 });
 
-function playlistItem(item) {
-  return    '<li data-pos="' + item.Pos + '">'
-          +   '<button class="remove"><i class="fa fa-times-circle-o"></i></button>'
-          +   (item.Name || item.Title || '')
-          + '</li>';
-}
+
+/*
 
 player.on('player', function (content) {
   console.log('player changed', content);
-});
-
-var playButton = document.querySelector('.play');
-playButton.addEventListener('click', function () {
-  player.play();
-});
-
-var pauseButton = document.querySelector('.pause');
-pauseButton.addEventListener('click', function () {
-  player.pause({ value: true });
-});
-
-var playlistClearButton = document.querySelector('.playlist-clear');
-playlistClearButton.addEventListener('click', function () {
-  player.clear();
 });
 
 var playlistInput = document.querySelector('.playlist input');
