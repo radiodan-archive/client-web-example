@@ -22,8 +22,10 @@ function handlePlayPause(evt) {
   var currentState = playPauseEl.dataset.state;
   if (currentState === 'paused') {
     setPlayState();
+    play();
   } else {
     setPauseState();
+    pause();
   }
 }
 
@@ -31,15 +33,24 @@ function handlePlayPause(evt) {
 // and actually start playing
 function setPlayState() {
   playPauseEl.dataset.state = 'playing';
-  play();
 }
 
 // Set the button to the paused state
 // and tell the player to pause
 function setPauseState() {
   playPauseEl.dataset.state = 'paused';
-  pause();
 }
+
+/*
+  Listen for general player state changes
+*/
+player.on('player', function (info) {
+  if (info.state === 'play') {
+    setPlayState();
+  } else {
+    setPauseState();
+  }
+});
 
 /*
   Next
@@ -105,7 +116,7 @@ function createPlaylistRowForItem(item) {
           +   '<td>' + (item.Name || item.Title || '') + '</td>'
           +   '<td>' + (item.Artist || '') + '</td>'
           +   '<td>' + '00:00' + '</td>'
-          +   '<td><button class="remove" data-pos="' + item.Pos + '"><i class="fa fa-times-circle-o"></i></button></td>'
+          +   '<td><button class="remove no-button" data-pos="' + item.Pos + '"><i class="fa fa-times-circle"></i></button></td>'
           + '</tr>';
 }
 
@@ -182,9 +193,15 @@ function performSearch() {
 }
 
 function populateSearchResults(evt) {
-  console.log('populateSearchResults', evt.results);
-  var html = '';
-  html = evt.results.map(createSearchRowForItem).join('');
+  var results = evt.results,
+      html = '';
+
+  if (results.length === 0) {
+    html = '<tr><td colspan="5">No search results</td></tr>';
+  } else {
+    html = evt.results.map(createSearchRowForItem).join('');
+  }
+
   searchResultsEl.innerHTML = html;
 }
 
@@ -225,35 +242,58 @@ function handleSearchAddClick(evt) {
 }
 
 /*
-
-player.on('player', function (content) {
-  console.log('player changed', content);
-});
-
-function showLoadingIndicator() {
-  $searchSpinner.classList
-                .add('is-active');
-}
-
-function hideLoadingIndicator() {
-  $searchSpinner.classList
-                .remove('is-active');
-}
-
-getJSON('http://bbcservices.herokuapp.com/services.json', buildServicesList);
+  Live streams list
+*/
+var streamsEl = document.querySelector('.streams');
+getJSON('https://bbcservices.herokuapp.com/services.json', buildServicesList);
 
 function buildServicesList(json) {
-  streams.innerHTML = json.services.map(function (service) {
-   if (service.streams.length > 0) {
-     return '<li>'
-           +   '<a href="' + service.streams[0].url + '">'
-           +     '<img src="' + service.logos.svg + '" />'
-           +     '<span>' + (service.now_and_next[0].brand || '') + '</span>'
-           +   '</a>'
-           + '</li>';
-   } else {
-     return '';
-   }
-  }).join('');
+  streamsEl.innerHTML = json.services
+                            .map(createServiceListItem)
+                            .join('');
 }
-*/
+
+function createServiceListItem(service) {
+  if (service.streams.length > 0) {
+    return '<li>'
+          +   '<a href="' + service.streams[0].url + '">'
+          +     '<img src="' + service.logos.svg + '" />'
+          +     '<span>'
+          +       '<i class="fa fa-plus-circle"></i> '
+          +       (service.now_and_next[0].brand || '')
+          +     '</span>'
+          +   '</a>'
+          + '</li>';
+  } else {
+    return '';
+  }
+}
+
+// Add stream to the playlist on click
+streamsEl.addEventListener('click', handleAddStream);
+
+function handleAddStream(evt) {
+  var targetEl = evt.target,
+      url;
+
+  // Prevent any links being followed
+  evt.preventDefault();
+
+  // This will run for any click on the streams list element
+  // If the parent of the element clicked is the anchor, then
+  // set the parent as the target
+  if (targetEl.parentNode.nodeName === 'A') {
+    targetEl = targetEl.parentNode;
+  }
+
+  // If the target is the anchor then add to the playlist
+  if (targetEl.nodeName === 'A') {
+    url = targetEl.getAttribute('href');
+  }
+
+  console.log(targetEl, targetEl.parentNode, url);
+
+  if (url) {
+    addToPlaylist(url).then(play);
+  }
+}

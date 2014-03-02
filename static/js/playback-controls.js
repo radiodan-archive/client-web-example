@@ -7,25 +7,25 @@ function pause() {
 }
 
 function nextTrack() {
-  player.next();
+  return player.next();
 }
 
 function previousTrack() {
-  player.previous();
+  return player.previous();
 }
 
 function setVolume(vol) {
-  player.volume({ value: vol });
+  return player.volume({ value: vol });
 }
 
 function clearPlaylist() {
-  player.clear();
+  return player.clear();
 }
 
 function addToPlaylist(path) {
-  player.add({ playlist: [ path ]});
+  return player.add({ playlist: [ path ]});
 }
 
 function removeFromPlaylist(position) {
-  player.remove({ position: position });
+  return player.remove({ position: position });
 }

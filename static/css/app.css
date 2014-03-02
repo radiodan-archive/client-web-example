@@ -7,6 +7,10 @@ body {
   background: none;
 }
 
+.controls {
+  background-color: #ddd;
+}
+
 .control {
   font-size: 2em;
 }
@@ -24,18 +28,12 @@ body {
 }
 
 .panel {
-  background-color: #ddd;
+  margin: 1em 2em;
   padding: 1em;
 }
 
 .panel h2 {
   margin-top: 0;
-}
-
-.group {
-  display: inline-block;
-  text-align: center;
-  width: 49%;
 }
 
 /*
@@ -47,7 +45,7 @@ body {
 
 input[type='text'] {
   border: none;
-  border-bottom: 1px solid #333;
+  border-bottom: 1px solid rgb(0, 0, 255);
   background: none;
   width: 75%;
   height: 1.5em;
@@ -82,6 +80,7 @@ input[type='text'] {
 
 table {
   width: 100%;
+  margin-top: 1em;
   border: none;
 }
 
@@ -99,17 +98,22 @@ table {
           transition: opacity 0.1s ease-in-out;
 }
 
-.msg {
-  display: inline-block;
-  min-width: 50px;
-  min-height: 50px;
+/*
+  Live streams
+*/
+
+.streams {
+  padding: 0;
 }
+
 .streams li {
   list-style: none;
   display: inline-block;
   vertical-align: top;
-  padding: 0.5em;
-  width: 100px;
+  padding: 0.5em 0.5em 1em 0.5em;
+  width: 97px;
+  font-size: 0.8em;
+  color: #333;
 }
 
 .streams li:hover {
@@ -121,29 +125,15 @@ table {
   color: #000;
 }
 
+.streams i {
+  color: rgb(0, 0, 255);
+}
+
 .streams span {
   display: block;
 }
 
 .streams img {
   height: 50px;
-}
-
-.search .spinner {
-  opacity: 0;
-  -webkit-transition: opacity 0.3s ease-out;
-     -moz-transition: opacity 0.3s ease-out;
-       -o-transition: opacity 0.3s ease-out;
-          transition: opacity 0.3s ease-out;
-
-}
-
-.search .spinner.is-active {
-  opacity: 1;
-}
-
-.remove {
-  border: none;
-  background: none;
-  color: red;
+  padding-bottom: 0.0.75em;
 }
