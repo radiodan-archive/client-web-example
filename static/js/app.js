@@ -5,6 +5,9 @@
 */
 var player = radiodan.player.create(1);
 
+// Hack to trigger volume event
+player.volume({diff: -1});
+
 /*
   Playback controls
 */
