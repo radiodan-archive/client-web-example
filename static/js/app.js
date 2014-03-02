@@ -87,9 +87,9 @@ player.on('playlist', rebuildPlaylistTable);
 function rebuildPlaylistTable(content) {
   var html = '';
   if (content.length === 0) {
-    html = 'Playlist is empty';
+    html = '<tr><td colspan="5">Playlist is empty</td></tr>';
   } else {
-    content.map(createPlaylistRowForItem);
+    html = content.map(createPlaylistRowForItem).join('');
   }
 
   currentPlaylistEl.innerHTML = html;
@@ -117,15 +117,27 @@ playlistClearButtonEl.addEventListener('click', function () {
   clearPlaylist();
 });
 
+/*
+  Add an item to the playlist from 'Add to playlist'
+*/
+var addToPlaylistInput  = document.querySelector('.add-to-playlist input');
+var addToPlaylistButton = document.querySelector('.add-to-playlist button');
 
+addToPlaylistButton.addEventListener('click', handleAddToPlaylist);
+
+function handleAddToPlaylist() {
+  // Handle adding to playlist
+  if (addToPlaylistInput.value === '') { return; }
+
+  // Add to the player's playlist
+  addToPlaylist(addToPlaylistInput.value);
+}
 /*
 
 player.on('player', function (content) {
   console.log('player changed', content);
 });
 
-var playlistInput = document.querySelector('.playlist input');
-var playlistButton = document.querySelector('.playlist button');
 var playlist = document.querySelector('.playlists');
 
 playlist.addEventListener('click', function (evt) {
@@ -143,24 +155,6 @@ playlist.addEventListener('click', function (evt) {
                     .pos;
         removeFromPlaylist(pos);
       }
-});
-
-playlistButton.addEventListener('click', function () {
-  if (playlistInput.value == '') { return; }
-
-  player.add({ playlist: [
-    playlistInput.value
-  ]}).then(
-    function () {
-      console.log('Done');
-      playlistInput.value = '';
-    },
-    function () {
-      console.error('Couldn\'t add to playlist');
-    }
-  );
-  console.log('Loading...');
-
 });
 
 var streams = document.querySelector('.streams');

@@ -21,3 +21,7 @@ function setVolume(vol) {
 function clearPlaylist() {
   player.clear();
 }
+
+function addToPlaylist(path) {
+  player.add({ playlist: [ path ]});
+}

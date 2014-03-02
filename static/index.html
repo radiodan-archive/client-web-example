@@ -32,7 +32,7 @@
         </label>
       </div>
 
-      <div id="currnt-playlist" class="current-playlist">
+      <div id="current-playlist" class="current-playlist">
         <h2>Current playlist</h2>
         <button id="clear-playlist" class="clear-playlist pure-button button-xsmall">Clear</button>
         <table class="pure-table pure-table-horizontal pure-table-striped">
@@ -50,20 +50,37 @@
           </tbody>
         </table>
       </div>
+  </div>
+
+  <div class="pure-u-1-2">
+    <div class="panel collapse add-to-playlist">
+      <h2><i class="fa fa-plus"></i> Add stream/file path</h2>
+      <div>
+        <input type="text" placeholder="Stream, music file" />
+        <button class="no-button"><i class="fa fa-plus-circle"></i> Add</button>
+      </div>
+    </div>
+    <div class="panel collapse">
+      <h2><i class="fa fa-search"></i> Search library</h2>
+      <div></div>
+    </div>
+    <div class="panel collapse">
+      <h2><i class="fa fa-cloud"></i> Live streams</h2>
+      <div>
+        <ul class="streams"></ul>
+      </div>
+    </div>
+
+  </div>
 
     <!--
     <h2>Playlists</h2>
-    <div>
-      <button class="playlist-clear pure-button">Clear playlist</button>
-    </div>
     <div>
       <label class="playlist">Item to add to playlist:
         <input type="text" placeholder="Stream, music file" />
         <button class="pure-button">Add</button>
       </label>
     </div>
-    -->
-
     <h2>Search</h2>
     <div class="search">
       <label>Search:
@@ -82,6 +99,7 @@
     <ul class="streams">
     </ul>
   </div>
+    -->
 
   <script src="/js/lib/xhr.js"></script>
   <script src="/js/playback-controls.js"></script>
