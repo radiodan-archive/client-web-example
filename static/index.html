@@ -60,9 +60,25 @@
         <button class="no-button"><i class="fa fa-plus-circle"></i> Add</button>
       </div>
     </div>
-    <div class="panel collapse">
+    <div class="panel collapse search">
       <h2><i class="fa fa-search"></i> Search library</h2>
-      <div></div>
+      <div>
+        <input type="text" placeholder="File name, track, artists" />
+        <button class="no-button"><i class="fa fa-search"></i> Search</button>
+        <table class="pure-table pure-table-horizontal pure-table-striped">
+          <thead>
+            <tr>
+              <th>Title</th>
+              <th>Artist</th>
+              <th>Length</th>
+              <th>Add</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- content to go here -->
+          </tbody>
+        </table>
+      </div>
     </div>
     <div class="panel collapse">
       <h2><i class="fa fa-cloud"></i> Live streams</h2>
@@ -103,6 +119,7 @@
 
   <script src="/js/lib/xhr.js"></script>
   <script src="/js/playback-controls.js"></script>
+  <script src="/js/search.js"></script>
   <script src="/js/app.js"></script>
 </body>
 </html>

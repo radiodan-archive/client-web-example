@@ -118,6 +118,32 @@ playlistClearButtonEl.addEventListener('click', function () {
 });
 
 /*
+  Remove an item from playlist when button's pressed
+*/
+currentPlaylistEl.addEventListener('click', handleRemovePlaylist);
+
+function handleRemovePlaylist(evt) {
+  var targetEl = evt.target,
+      position;
+
+  // This will run for any click on the currentPlaylist element
+  // If the element clicked is the icon, set the target as the
+  // parent button
+  if (targetEl.nodeName === 'I') {
+    targetEl = targetEl.parentNode;
+  }
+
+  // If the target is the button then remove from the playlist
+  if (targetEl.nodeName === 'BUTTON') {
+    position = targetEl.dataset.pos;
+  }
+
+  if (position) {
+    removeFromPlaylist(position);
+  }
+}
+
+/*
   Add an item to the playlist from 'Add to playlist'
 */
 var addToPlaylistInput  = document.querySelector('.add-to-playlist input');
@@ -132,121 +158,77 @@ function handleAddToPlaylist() {
   // Add to the player's playlist
   addToPlaylist(addToPlaylistInput.value);
 }
+
+/*
+  Perform a search
+*/
+var searchPanelEl   = document.querySelector('.search');
+var searchInputEl   = searchPanelEl.querySelector('input');
+var searchButtonEl  = searchPanelEl.querySelector('button');
+var searchResultsEl = searchPanelEl.querySelector('tbody');
+
+// Perform a search when the text box changes or
+// a button is pressed
+searchInputEl.addEventListener('input', performSearch);
+searchButtonEl.addEventListener('click', performSearch);
+
+// Listen for the custom 'searchresults' event fired
+// on the document when results are result
+document.addEventListener('searchresults', populateSearchResults);
+
+function performSearch() {
+  var term = searchInputEl.value;
+  search(term);
+}
+
+function populateSearchResults(evt) {
+  console.log('populateSearchResults', evt.results);
+  var html = '';
+  html = evt.results.map(createSearchRowForItem).join('');
+  searchResultsEl.innerHTML = html;
+}
+
+function createSearchRowForItem(item) {
+  return    '<tr>'
+          +   '<td>' + (item.Name || item.Title || '') + '</td>'
+          +   '<td>' + (item.Artist || '') + '</td>'
+          +   '<td>' + (item.Time || '') + '</td>'
+          +   '<td><button class="add no-button" data-file="' + item.file + '"><i class="fa fa-plus-circle"></i></button></td>'
+          + '</tr>';
+}
+
+/*
+  Adding a search result
+*/
+// Listen for the 'add' button to be pressed on a search result
+searchResultsEl.addEventListener('click', handleSearchAddClick);
+
+function handleSearchAddClick(evt) {
+  var targetEl = evt.target,
+      file;
+
+  // This will run for any click on the searchResults element
+  // If the element clicked is the icon, set the target as the
+  // parent button
+  if (targetEl.nodeName === 'I') {
+    targetEl = targetEl.parentNode;
+  }
+
+  // If the target is the button then add to the playlist
+  if (targetEl.nodeName === 'BUTTON') {
+    file = targetEl.dataset.file;
+  }
+
+  if (file) {
+    addToPlaylist(file);
+  }
+}
+
 /*
 
 player.on('player', function (content) {
   console.log('player changed', content);
 });
-
-var playlist = document.querySelector('.playlists');
-
-playlist.addEventListener('click', function (evt) {
-      var target = evt.target,
-          pos;
-
-      if (target.nodeName === 'I') {
-        target = target.parentNode;
-      }
-
-      if (target.nodeName === 'BUTTON') {
-        evt.preventDefault();
-        pos = target.parentNode
-                    .dataset
-                    .pos;
-        removeFromPlaylist(pos);
-      }
-});
-
-var streams = document.querySelector('.streams');
-streams.addEventListener('click', function (evt) {
-  var target = evt.target.parentNode;
-
-  console.log('click', evt);
-
-  evt.preventDefault();
-
-  if (target.nodeName !== 'A') { return; }
-
-  var url = target.getAttribute('href');
-
-  if (url) {
-    player.clear();
-    player.add({ playlist: [url] });
-    player.play();
-  } else {
-    console.log('No url for stream');
-  }
-}, false);
-
-var $search = document.querySelector('.search');
-var $searchInput   = $search.querySelector('input');
-var $searchButton  = $search.querySelector('button');
-var $searchResults = $search.querySelector('ul');
-var $searchStatus  = $search.querySelector('.msg');
-var $searchSpinner = $search.querySelector('.spinner');
-$searchInput.addEventListener('input', performSearch);
-$searchButton.addEventListener('click', performSearch);
-$searchResults.addEventListener('click', function (evt) {
-  var target = evt.target,
-      file;
-  if (target.nodeName === 'A') {
-    file = target.getAttribute('href');
-    addToPlaylist(file);
-  }
-  evt.preventDefault();
-});
-
-function addToPlaylist(file) {
-  if (file) {
-    player.add({ playlist: file });
-  }
-}
-
-function removeFromPlaylist(pos) {
-  if (pos) {
-    player.remove({ position: pos });
-  }
-}
-
-function performSearch() {
-  var term = $searchInput.value;
-  if (term.length > 0) {
-    search(term);
-  } else {
-    clearSearchResults();
-  }
-}
-
-function search(term) {
-  player.search({ any: term })
-        .then(showResults)
-        .then(hideLoadingIndicator, hideLoadingIndicator);
-  showLoadingIndicator();
-}
-
-function showResults(results) {
-  var html = '';
-
-  if (results && results[0]) {
-    html = results.map(htmlForResult).join('');
-  }
-
-  $searchResults.innerHTML = html;
-
-  return;
-}
-
-function htmlForResult(result) {
-  return '<li>'
-          +   '<a href="' + result.file + '">'
-          +     result.Title + ', ' + result.Artist
-          +   '</a>'
-          + '</li>';
-}
-
-function clearSearchResults() {
-  $searchResults.innerHTML = '';
-}
 
 function showLoadingIndicator() {
   $searchSpinner.classList
@@ -257,8 +239,6 @@ function hideLoadingIndicator() {
   $searchSpinner.classList
                 .remove('is-active');
 }
-
-
 
 getJSON('http://bbcservices.herokuapp.com/services.json', buildServicesList);
 

@@ -25,3 +25,7 @@ function clearPlaylist() {
 function addToPlaylist(path) {
   player.add({ playlist: [ path ]});
 }
+
+function removeFromPlaylist(position) {
+  player.remove({ position: position });
+}
