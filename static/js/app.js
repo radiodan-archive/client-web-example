@@ -1,16 +1,90 @@
+/*
+  Connect to a Radiodan Player.
+  '1' is the ID of the player to
+  connect to.
+*/
 var player = radiodan.player.create(1);
 
+/*
+  Playback controls
+*/
+var playPauseEl = document.querySelector('#play-pause');
+
+// Listen for the play-pause button to be pressed
+playPauseEl.addEventListener('click', handlePlayPause);
+
+/*
+  Trigger either playing or paused when the button
+  is clicked
+*/
+function handlePlayPause(evt) {
+  // Get the current button state
+  var currentState = playPauseEl.dataset.state;
+  if (currentState === 'paused') {
+    setPlayState();
+  } else {
+    setPauseState();
+  }
+}
+
+// Set the button to the playing state
+// and actually start playing
+function setPlayState() {
+  playPauseEl.dataset.state = 'playing';
+  play();
+}
+
+// Set the button to the paused state
+// and tell the player to pause
+function setPauseState() {
+  playPauseEl.dataset.state = 'paused';
+  pause();
+}
+
+/*
+  Next
+*/
+var nextEl = document.querySelector('#next');
+
+// Listen for the play-pause button to be pressed
+nextEl.addEventListener('click', function () {
+  nextTrack();
+});
+
+var previousEl = document.querySelector('#previous');
+
+// Listen for the play-pause button to be pressed
+previousEl.addEventListener('click', function () {
+  previousTrack();
+});
+
+/*
+  Change the volume when the slide is moved
+*/
+var volumeEl = document.querySelector('#volume');
+volumeEl.addEventListener('change', function (evt) {
+  console.log('Volume', volumeEl.value);
+  setVolume(volumeEl.value)
+});
+
+/*
+  If the player volume is changed elsewhere in the
+  system, change the position of the slider
+  to match the new volume
+*/
+player.on('volume', function(content) {
+  console.log('Volume has changed to ', content.volume);
+  volumeEl.value = content.volume;
+});
+
+/*
 var playlists = document.querySelector('.playlists');
 
 var vol = document.querySelector('.volume');
 vol.addEventListener('change', function (evt) {
   console.log('Volume', vol.value);
-  player.volume({ value: vol.value });
+  setVolume(vol.value)
 });
-
-setTimeout(function () {
-  player.volume({ diff: -1 });
-}, 1000);
 
 player.on('volume', function(content) {
   console.log('changing volume to ', content.volume);
@@ -216,3 +290,4 @@ function buildServicesList(json) {
    }
   }).join('');
 }
+*/

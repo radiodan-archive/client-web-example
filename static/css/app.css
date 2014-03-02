@@ -1,0 +1,103 @@
+body {
+  margin: 2em;
+}
+
+.no-button {
+  border: none;
+  background: none;
+}
+
+.control {
+  font-size: 2em;
+}
+
+.no-button:hover {
+  color: blue;
+}
+
+.panel {
+  background-color: #ddd;
+  padding: 1em;
+}
+
+.panel h2 {
+  margin-top: 0;
+}
+
+.group {
+  display: inline-block;
+  text-align: center;
+  width: 49%;
+}
+
+.play-pause {
+  position: relative;
+}
+
+.play-pause .fa-pause {
+  margin-left: -50%;
+}
+
+.play-pause[data-state='paused'] .fa-pause {
+  opacity: 0;
+}
+
+.play-pause[data-state='playing'] .fa-play {
+  opacity: 0;
+}
+
+.transition-opacity {
+  -webkit-transition: opacity 0.1s ease-in-out;
+     -moz-transition: opacity 0.1s ease-in-out;
+       -o-transition: opacity 0.1s ease-in-out;
+          transition: opacity 0.1s ease-in-out;
+}
+
+.msg {
+  display: inline-block;
+  min-width: 50px;
+  min-height: 50px;
+}
+.streams li {
+  list-style: none;
+  display: inline-block;
+  vertical-align: top;
+  padding: 0.5em;
+  width: 100px;
+}
+
+.streams li:hover {
+  background-color: #eee;
+}
+
+.streams a {
+  text-decoration: none;
+  color: #000;
+}
+
+.streams span {
+  display: block;
+}
+
+.streams img {
+  height: 50px;
+}
+
+.search .spinner {
+  opacity: 0;
+  -webkit-transition: opacity 0.3s ease-out;
+     -moz-transition: opacity 0.3s ease-out;
+       -o-transition: opacity 0.3s ease-out;
+          transition: opacity 0.3s ease-out;
+
+}
+
+.search .spinner.is-active {
+  opacity: 1;
+}
+
+.remove {
+  border: none;
+  background: none;
+  color: red;
+}
