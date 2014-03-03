@@ -1,9 +1,20 @@
+/* jshint laxbreak: true, latedef: nofunc */
+/*
+  The following helper method are defined in
+  playback-controls.js and search.js
+*/
+/* globals play, pause, nextTrack, previousTrack,
+          setVolume, clearPlaylist, removeFromPlaylist,
+          addToPlaylist, search
+*/
+'use strict';
+
 /*
   Connect to a Radiodan Player.
   '1' is the ID of the player to
   connect to.
 */
-var player = radiodan.player.create(1);
+var player = window.radiodan.player.create(1);
 
 
 /*
@@ -18,7 +29,7 @@ playPauseEl.addEventListener('click', handlePlayPause);
   Trigger either playing or paused when the button
   is clicked
 */
-function handlePlayPause(evt) {
+function handlePlayPause() {
   // Get the current button state
   var currentState = playPauseEl.dataset.state;
   if (currentState === 'paused') {
@@ -82,9 +93,9 @@ previousEl.addEventListener('click', function () {
   Change the volume when the slide is moved
 */
 var volumeEl = document.querySelector('#volume');
-volumeEl.addEventListener('change', function (evt) {
+volumeEl.addEventListener('change', function () {
   console.log('Volume', volumeEl.value);
-  setVolume(volumeEl.value)
+  setVolume(volumeEl.value);
 });
 
 /*
@@ -203,6 +214,7 @@ function clearCurrentSong() {
 }
 
 function setNextSong(position) {
+  clearNextSong();
   var row = currentPlaylistEl.children[position];
   if (row) {
     row.classList.add('is-next');
@@ -291,7 +303,7 @@ function handleSearchAddClick(evt) {
   Live streams list
 */
 var streamsEl = document.querySelector('.streams');
-getJSON('https://bbcservices.herokuapp.com/services.json', buildServicesList);
+window.getJSON('https://bbcservices.herokuapp.com/services.json', buildServicesList);
 
 function buildServicesList(json) {
   streamsEl.innerHTML = json.services
