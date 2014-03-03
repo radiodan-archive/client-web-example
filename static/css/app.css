@@ -78,6 +78,24 @@ input[type='text'] {
   position: relative;
 }
 
+.current-playlist .indicator,
+.current-playlist .indicator {
+  display: none;
+}
+
+.current-playlist .is-current .indicator,
+.current-playlist .is-next .indicator {
+  display: block;
+}
+
+.current-playlist .is-current .indicator {
+  color: rgba(0, 255, 0, 1);
+}
+
+.current-playlist .is-next .indicator {
+  color: rgba(0, 255, 0, 0.5);
+}
+
 table {
   width: 100%;
   margin-top: 1em;

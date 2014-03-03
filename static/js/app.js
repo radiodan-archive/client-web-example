@@ -51,6 +51,14 @@ player.on('player', function (info) {
   } else {
     setPauseState();
   }
+
+  if (info.song) {
+    setCurrentSong(info.song);
+  }
+
+  if (info.nextsong) {
+    setNextSong(info.nextsong);
+  }
 });
 
 /*
@@ -103,7 +111,7 @@ player.on('playlist', rebuildPlaylistTable);
 function rebuildPlaylistTable(content) {
   var html = '';
   if (content.length === 0) {
-    html = '<tr><td colspan="5">Playlist is empty</td></tr>';
+    html = '<tr><td colspan="6">Playlist is empty</td></tr>';
   } else {
     html = content.map(createPlaylistRowForItem).join('');
   }
@@ -117,6 +125,7 @@ function rebuildPlaylistTable(content) {
 */
 function createPlaylistRowForItem(item) {
   return    '<tr>'
+          +   '<td><i class="indicator fa fa-circle"></i></td>'
           +   '<td>' + item.Pos + '</td>'
           +   '<td>' + (item.Name || item.Title || '') + '</td>'
           +   '<td>' + (item.Artist || '') + '</td>'
@@ -173,6 +182,38 @@ function handleAddToPlaylist() {
 
   // Add to the player's playlist
   addToPlaylist(addToPlaylistInput.value);
+}
+
+/*
+  Show the current and next songs on the playlist
+*/
+function setCurrentSong(position) {
+  clearCurrentSong();
+  var row = currentPlaylistEl.children[position];
+  if (row) {
+    row.classList.add('is-current');
+  }
+}
+
+function clearCurrentSong() {
+  var row = currentPlaylistEl.querySelector('.is-current');
+  if (row) {
+    row.classList.remove('is-current');
+  }
+}
+
+function setNextSong(position) {
+  var row = currentPlaylistEl.children[position];
+  if (row) {
+    row.classList.add('is-next');
+  }
+}
+
+function clearNextSong() {
+  var row = currentPlaylistEl.querySelector('.is-next');
+  if (row) {
+    row.classList.remove('is-next');
+  }
 }
 
 /*
@@ -307,6 +348,10 @@ function handleAddStream(evt) {
 // the user interface
 player.status()
       .then(function (status) {
+        if (status.playlist) {
+          rebuildPlaylistTable(status.playlist);
+        }
+
         if (status.player.volume) {
           setVolumeSlider(status.player.volume);
         }
@@ -317,7 +362,11 @@ player.status()
           setPauseState();
         }
 
-        if (status.playlist) {
-          rebuildPlaylistTable(status.playlist);
+        if (status.player.song) {
+          setCurrentSong(status.player.song);
+        }
+
+        if (status.player.nextsong) {
+          setNextSong(status.player.nextsong);
         }
       });
