@@ -5,8 +5,6 @@
 */
 var player = radiodan.player.create(1);
 
-// Hack to trigger volume event
-player.volume({diff: -1});
 
 /*
   Playback controls
@@ -88,8 +86,12 @@ volumeEl.addEventListener('change', function (evt) {
 */
 player.on('volume', function(content) {
   console.log('Volume has changed to ', content.volume);
-  volumeEl.value = content.volume;
+  setVolumeSlider(content.volume);
 });
+
+function setVolumeSlider(volume) {
+  volumeEl.value = volume;
+}
 
 /*
   When the playlist has changed, rebuild the
@@ -300,3 +302,16 @@ function handleAddStream(evt) {
     addToPlaylist(url).then(play);
   }
 }
+
+// Get status to do an initial update of
+// the user interface
+player.status()
+      .then(function (status) {
+        if (status.player.volume) {
+          setVolumeSlider(status.player.volume);
+        }
+
+        if (status.playlist) {
+          rebuildPlaylistTable(status.playlist);
+        }
+      });
