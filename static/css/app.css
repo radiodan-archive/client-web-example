@@ -43,6 +43,7 @@ body {
   font-size: 70%;
 }
 
+input[type='search'],
 input[type='text'] {
   border: none;
   border-bottom: 1px solid rgb(0, 0, 255);
