@@ -311,6 +311,12 @@ player.status()
           setVolumeSlider(status.player.volume);
         }
 
+        if (status.player.state && status.player.state === 'play') {
+          setPlayState();
+        } else {
+          setPauseState();
+        }
+
         if (status.playlist) {
           rebuildPlaylistTable(status.playlist);
         }
