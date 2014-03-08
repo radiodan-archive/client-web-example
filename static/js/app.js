@@ -16,6 +16,11 @@
 */
 var player = window.radiodan.player.create(1);
 
+/*
+  Connect to default audio device.
+*/
+var audio  = window.radiodan.audio.create('default');
+
 
 /*
   Playback controls
@@ -103,7 +108,7 @@ volumeEl.addEventListener('change', function () {
   system, change the position of the slider
   to match the new volume
 */
-player.on('volume', function(content) {
+audio.on('volume', function(content) {
   console.log('Volume has changed to ', content.volume);
   setVolumeSlider(content.volume);
 });
@@ -363,11 +368,6 @@ player.status()
         if (status.playlist) {
           rebuildPlaylistTable(status.playlist);
         }
-
-        if (status.player.volume) {
-          setVolumeSlider(status.player.volume);
-        }
-
         if (status.player.state && status.player.state === 'play') {
           setPlayState();
         } else {
@@ -381,4 +381,11 @@ player.status()
         if (status.player.nextsong) {
           setNextSong(status.player.nextsong);
         }
+      });
+
+audio.status()
+      .then(function (status) {
+          if (status.volume) {
+            setVolumeSlider(status.volume);
+          }
       });
