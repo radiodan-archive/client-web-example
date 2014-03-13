@@ -308,7 +308,10 @@ function handleSearchAddClick(evt) {
   Live streams list
 */
 var streamsEl = document.querySelector('.streams');
-window.getJSON('https://bbcservices.herokuapp.com/services.json', buildServicesList);
+window.getJSON(
+  'http://bbcradioservices.pixelblend.co.uk/services.json',
+  buildServicesList
+);
 
 function buildServicesList(json) {
   streamsEl.innerHTML = json.services
@@ -323,7 +326,7 @@ function createServiceListItem(service) {
           +     '<img src="' + service.logos.svg + '" />'
           +     '<span>'
           +       '<i class="fa fa-plus-circle"></i> '
-          +       (service.now_and_next[0].brand || '')
+          +       (service.nowAndNext[0].brand || '')
           +     '</span>'
           +   '</a>'
           + '</li>';
