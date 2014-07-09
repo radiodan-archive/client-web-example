@@ -320,10 +320,10 @@ function buildServicesList(json) {
 }
 
 function createServiceListItem(service) {
-  if (service.streams.length > 0) {
+  if (service.audioStreams.length > 0) {
     return '<li>'
-          +   '<a href="' + service.streams[0].url + '">'
-          +     '<img src="' + service.logos.svg + '" />'
+          +   '<a href="' + service.audioStreams[0].url + '">'
+          +     '<img src="' + service.logos.active + '" />'
           +     '<span>'
           +       '<i class="fa fa-plus-circle"></i> '
           +       (service.nowAndNext[0].brand || '')
