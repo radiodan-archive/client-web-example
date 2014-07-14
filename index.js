@@ -4,7 +4,9 @@ var express  = require('express'),
     mdns     = require('./lib/mdns'),
     port     = 3001;
 
-app.use('/radiodan', radiodan.middleware());
+app.use('/radiodan',
+  radiodan.middleware({crossOrigin: true})
+);
 
 app.listen(port);
 
