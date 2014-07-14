@@ -9,6 +9,7 @@
 */
 'use strict';
 
+window.radiodan = window.Radiodan.create();
 /*
   Connect to a Radiodan Player.
   '1' is the ID of the player to
