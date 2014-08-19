@@ -8,4 +8,4 @@ This application combines with the radiodan server to create a basic radio exper
 
 ## Running
 
-`node index.js` or `foreman start`
+`node main.js` or `foreman start`

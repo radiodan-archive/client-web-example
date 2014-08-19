@@ -2,7 +2,7 @@ var express  = require('express'),
     app      = express(),
     radiodan = require('radiodan-client'),
     mdns     = require('./lib/mdns'),
-    port     = 3001;
+    port     = process.env.PORT || 5000;
 
 app.use('/radiodan',
   radiodan.middleware({crossOrigin: true})
