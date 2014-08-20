@@ -12,10 +12,10 @@
 window.radiodan = window.Radiodan.create();
 /*
   Connect to a Radiodan Player.
-  '1' is the ID of the player to
+  the argument is the ID of the player to
   connect to.
 */
-var player = window.radiodan.player.create(1);
+var player = window.radiodan.player.create('main');
 
 /*
   Connect to default audio device.
