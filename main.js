@@ -1,6 +1,5 @@
 var express  = require('express'),
     request = require('request'),
-    extractValues = require('extract-values'),
     app      = express(),
     radiodanClient = require('radiodan-client'),
     radiodan = radiodanClient.create(),
