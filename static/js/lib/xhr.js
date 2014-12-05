@@ -8,6 +8,30 @@ function getJSON(url, success) {
   xhr.send();
 }
 
+//simple get rss feed method (for proxied context)
+
+function getRSS(url, success) {
+  var xhr = new XMLHttpRequest();
+  xhr.open('GET', url, true);
+  xhr.onload = function() {
+    var rss = xhr.responseText;
+    //console.log(rss);
+    var arr = rss.split("\n");
+    var urls = [];
+    for(var i =0; i< arr.length; i++){
+      var text = arr[i];
+      var m = text.match(/<enclosure url=\"(.*?)\"/);
+      if(m){
+        urls.push(m[1]);
+      }
+    }
+    console.log(urls);
+    success(urls);
+  };
+  xhr.send();
+}
+
+
 function createCORSRequest(method, url) {
   var xhr = new XMLHttpRequest();
   if ("withCredentials" in xhr) {

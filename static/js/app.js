@@ -28,6 +28,26 @@ var audio  = window.radiodan.audio.create('default');
 var device = window.radiodan.device.create();
 
 /*
+
+Libby's additions - get the rss feed and add to playlist
+
+*/
+
+getRSS("/rss",function(urls){
+ console.log("ok");
+ console.log(urls);
+ if(urls && urls.length>0){
+   for (var i=0; i< urls.length; i++){
+     addToPlaylist(urls[i]); 
+   }
+   play();
+ }else{
+   console.log("nothing to add to playlist");
+ }
+});
+
+
+/*
   Power controls
 */
 var powerEl = document.querySelector('#device-power');
