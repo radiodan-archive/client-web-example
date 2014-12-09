@@ -1,11 +1,13 @@
 var express  = require('express'),
     request = require('request'),
+    cheerio = require('cheerio'),
     app      = express(),
     radiodanClient = require('radiodan-client'),
     radiodan = radiodanClient.create(),
+    player   = radiodan.player.get('main'),
     port     = process.env.PORT || 5000;
 
-var proxy = require('express-http-proxy');
+// var proxy = require('express-http-proxy');
 
 app.use('/radiodan',
   radiodanClient.middleware({crossOrigin: true})
@@ -13,15 +15,31 @@ app.use('/radiodan',
 
 app.listen(port);
 
+function extractUrlFromEnclosure(index, item) {
+  return cheerio(item).attr('url');
+}
 
-// proxy our one url
-var request = require('request');
-app.get('/rss', function(req,res) {
-  //modify the url in any way you want
-  var newurl = 'https://huffduffer.com/libbymiller/rss';
-  request(newurl).pipe(res);
+var newurl = 'https://huffduffer.com/libbymiller/rss';
+
+request(newurl, function (err, data) {
+  var doc = cheerio(data.body);
+  var urls = doc.find('enclosure')
+                .map(extractUrlFromEnclosure)
+                .get();
+  player.add({
+    playlist: urls,
+    clear: true
+  });
+  player.play();
 });
 
+function gracefulExit() {
+  console.log('Exiting...');
+  player.clear().then(process.exit);
+}
+
+process.on('SIGTERM', gracefulExit);
+process.on('SIGINT' , gracefulExit);
 
 app.use(express.static(__dirname + '/static'));
 
