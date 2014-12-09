@@ -19,14 +19,21 @@ function extractUrlFromEnclosure(index, item) {
   return cheerio(item).attr('url');
 }
 
-function handlePress(){
+function startPlaying(){
   console.log("powerButton PRESSED");
+  player.play();
+}
+
+function stopPlaying() {
+  console.log("powerButton RELEASED");
+  player.pause({ value: true });
 }
 
 var newurl = 'https://huffduffer.com/libbymiller/rss';
 
 var powerButton = radiodan.button.get("power");
-powerButton.on("press",handlePress);
+powerButton.on("press", stopPlaying);
+powerButton.on("release", startPlaying);
 
 request(newurl, function (err, data) {
   var doc = cheerio(data.body);
@@ -37,7 +44,6 @@ request(newurl, function (err, data) {
     playlist: urls,
     clear: true
   });
-  player.play();
 });
 
 function gracefulExit() {
