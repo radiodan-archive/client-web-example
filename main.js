@@ -19,7 +19,14 @@ function extractUrlFromEnclosure(index, item) {
   return cheerio(item).attr('url');
 }
 
+function handlePress(){
+  console.log("powerButton PRESSED");
+}
+
 var newurl = 'https://huffduffer.com/libbymiller/rss';
+
+var powerButton = radiodan.button.get("power");
+powerButton.on("press",handlePress);
 
 request(newurl, function (err, data) {
   var doc = cheerio(data.body);
