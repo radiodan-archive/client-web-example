@@ -1,7 +1,7 @@
 {
-  "name": "radiodan-web-example",
+  "name": "radiodan-huffduffer",
   "version": "0.1.0",
-  "description": "Radiodan example web app",
+  "description": "Radiodan example web app for huffduffer",
   "main": "main.js",
   "scripts": {
     "start": "./node_modules/.bin/nodemon",
@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/radiodan/client_web_example.git"
+    "url": "git://github.com/libbymiller/client_huffduffer.git"
   },
   "keywords": [
     "radiodan"
@@ -17,14 +17,16 @@
   "author": "Dan Nuttall <dan.nuttall@bbc.co.uk>",
   "license": "Apache-2",
   "bugs": {
-    "url": "https://github.com/radiodan/client_web_example/issues"
+    "url": "https://github.com/radiodan/client_huffduffer/issues"
   },
-  "homepage": "https://github.com/radiodan/client_web_example",
+  "homepage": "https://github.com/libbymiller/client_huffduffer",
   "dependencies": {
     "express": "^3.4.8",
-    "mdns": "^2.2.0",
+    "request": "^2.49.0",
     "radiodan-client": "https://github.com/radiodan/radiodan-client.js/archive/master.tar.gz",
-    "avahi_pub": "https://github.com/TheThingSystem/node_avahi_pub/archive/master.tar.gz"
+    "cheerio": "~0.18.0",
+    "mustache-express": "~1.2.0",
+    "body-parser": "~1.10.0"
   },
   "devDependencies": {
     "nodemon": "^1.0.15"
