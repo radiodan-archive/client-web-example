@@ -24,7 +24,9 @@
     "express": "^3.4.8",
     "request": "^2.49.0",
     "radiodan-client": "https://github.com/radiodan/radiodan-client.js/archive/master.tar.gz",
-    "cheerio": "~0.18.0"
+    "cheerio": "~0.18.0",
+    "mustache-express": "~1.2.0",
+    "body-parser": "~1.10.0"
   },
   "devDependencies": {
     "nodemon": "^1.0.15"

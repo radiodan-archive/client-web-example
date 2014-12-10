@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title></title>
+</head>
+<body>
+  <h1>RSS feed</h1>
+
+  <form action="/rss" method="POST">
+    <label>
+      RSS Feed URL
+      <input name="feedUrl" type="text" value="{{ feedUrl }}" />
+    </label>
+    <input type="submit" value="Save" />
+  </form>
+</body>
+</html>

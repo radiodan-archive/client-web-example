@@ -1,12 +1,20 @@
 var express  = require('express'),
     request = require('request'),
     cheerio = require('cheerio'),
+    mustacheExpress = require('mustache-express'),
+    bodyParser = require('body-parser'),
     app      = express(),
     radiodanClient = require('radiodan-client'),
     radiodan = radiodanClient.create(),
     player   = radiodan.player.get('main'),
     fs = require('fs'),
     port     = process.env.PORT || 5000;
+
+app.engine('mustache', mustacheExpress());
+app.set('view engine', 'mustache');
+app.set('views', __dirname + '/static');
+
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use('/radiodan',
   radiodanClient.middleware({crossOrigin: true})
@@ -16,6 +24,18 @@ var config = readOrCreateConfigWithDefaults(
   './config.json',
   { feedUrl: 'https://huffduffer.com/libbymiller/rss' }
 );
+
+app.get('/rss', function (req, res) {
+  res.render('config', { feedUrl: config.feedUrl });
+});
+
+app.post('/rss', function (req, res) {
+  if (req.body && req.body.feedUrl) {
+    config.feedUrl = req.body.feedUrl;
+    writeConfig('./config.json', config);
+  }
+  res.redirect('back');
+});
 
 app.listen(port);
 
@@ -39,6 +59,12 @@ powerButton.on("release", startPlaying);
 
 console.log('Reading feedUrl', config.feedUrl);
 request(config.feedUrl, function (err, data) {
+  if (err) {
+    console.error('Error fetching feed');
+    console.error(err.stack);
+    return;
+  }
+
   var doc = cheerio(data.body);
   var urls = doc.find('enclosure')
                 .map(extractUrlFromEnclosure)
