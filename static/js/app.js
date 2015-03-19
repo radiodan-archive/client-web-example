@@ -5,7 +5,7 @@
 */
 /* globals play, pause, nextTrack, previousTrack,
           setVolume, clearPlaylist, removeFromPlaylist,
-          addToPlaylist, search
+          addToPlaylist, loadPlaylist, search
 */
 'use strict';
 
@@ -344,9 +344,9 @@ function buildServicesList(json) {
 }
 
 function createServiceListItem(service) {
-  if (service.audioStreams.length > 0) {
+  if (service.playlist) {
     return '<li>'
-          +   '<a href="' + service.audioStreams[0].url + '">'
+          +   '<a href="' + service.playlist + '">'
           +     '<img src="' + service.logos.active + '" />'
           +     '<span>'
           +       '<i class="fa fa-plus-circle"></i> '
@@ -384,7 +384,7 @@ function handleAddStream(evt) {
   console.log(targetEl, targetEl.parentNode, url);
 
   if (url) {
-    addToPlaylist(url).then(play);
+    loadPlaylist(url).then(play);
   }
 }
 

@@ -26,6 +26,10 @@ function addToPlaylist(path) {
   return player.add({ playlist: [ path ]});
 }
 
+function loadPlaylist(path) {
+  return player.load({ playlist: [ path ]});
+}
+
 function removeFromPlaylist(position) {
   return player.remove({ position: position });
 }
